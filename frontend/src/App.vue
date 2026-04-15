@@ -2,8 +2,7 @@
   <div class="layout">
     <header class="navbar">
       <div class="navbar-brand">
-        <span class="brand-icon">G</span>
-        <span class="brand-name">Genie</span>
+        <img class="brand-icon" :src="naviIcon" alt="Genie icon" />
       </div>
 
       <nav class="navbar-tabs" role="navigation" aria-label="Genie spaces">
@@ -45,6 +44,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import naviIcon from '../icon/navi.svg'
 
 const spaces      = ref([])
 const activeSpace = ref(null)
@@ -92,10 +92,10 @@ body {
 .navbar-brand { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
 .brand-icon {
-  display: flex; align-items: center; justify-content: center;
+  display: block;
   width: 28px; height: 28px;
-  background: #2563eb; color: #fff;
-  font-size: 13px; font-weight: 700; border-radius: 7px;
+  border-radius: 7px;
+  object-fit: contain;
 }
 
 .brand-name { font-size: 15px; font-weight: 600; color: #0f172a; letter-spacing: -0.01em; }
