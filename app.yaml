@@ -1,0 +1,14 @@
+command: ["uvicorn", "app:app", "--app-dir", "backend"]
+env:
+  - name: 'MODE'
+    value: 'DBX'
+  - name: 'DATABRICKS_HOST'
+    value: 'https://adb-2205520462893510.10.azuredatabricks.net'
+  - name: 'WORKSPACE_ID'
+    value: '2205520462893510'
+  - name: 'GENIE_SPACE_RMS'
+    value: '01f0a27f8f1619668122002ddbe09257'
+  - name: 'GENIE_SPACE_SELLIN'
+    value: '01f133bcff1a162e9675cb990418a8d2'
+  - name: 'GENIE_SPACE_SELLOUT'
+    value: '01f1368e743d1d80afe987959cc94fae'
