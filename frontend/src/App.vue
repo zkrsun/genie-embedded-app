@@ -108,10 +108,11 @@ body {
 /* Breadcrumb */
 .breadcrumb { display: flex; align-items: center; gap: 6px; }
 .back-link {
-  font-size: 13px; font-weight: 500; color: #1b6feb;
+  font-size: 13px; font-weight: 500; color: #5c6070;
   text-decoration: none;
+  transition: color 0.15s;
 }
-.back-link:hover { text-decoration: underline; }
+.back-link:hover { color: #1c1f26; }
 .bc-sep     { color: #c8c3bb; font-size: 14px; }
 .bc-current { font-size: 13px; font-weight: 600; color: #1c1f26; }
 .bc-bu      { font-size: 11px; color: #9aa0ad; text-transform: uppercase; letter-spacing: 0.06em; }

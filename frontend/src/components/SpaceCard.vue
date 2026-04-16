@@ -1,10 +1,21 @@
 <template>
   <button class="space-card" @click="$emit('select', space)">
     <div class="card-icon-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <ellipse cx="12" cy="6" rx="8" ry="3"/>
-        <path d="M4 6v4c0 1.657 3.582 3 8 3s8-1.343 8-3V6"/>
-        <path d="M4 10v4c0 1.657 3.582 3 8 3s8-1.343 8-3v-4"/>
+      <!-- Custom multi-path icon -->
+      <svg v-if="iconConfig.paths" :viewBox="iconConfig.viewBox">
+        <path
+          v-for="(p, i) in iconConfig.paths"
+          :key="i"
+          :d="p.d"
+          :fill="p.fill"
+          :fill-rule="p.fillRule"
+          :clip-rule="p.clipRule"
+          :opacity="p.opacity"
+        />
+      </svg>
+      <!-- Default single-path icon -->
+      <svg v-else :viewBox="iconConfig.viewBox" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path :d="iconConfig.path" />
       </svg>
     </div>
 
@@ -21,11 +32,16 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+import { getCategoryIconConfig } from '../config/categoryConfig.js'
+
+const props = defineProps({
   space: { type: Object, required: true },  // { name, url }
   bu:    { type: String, required: true },
 })
 defineEmits(['select'])
+
+const iconConfig = computed(() => getCategoryIconConfig(props.space.name))
 </script>
 
 <style scoped>

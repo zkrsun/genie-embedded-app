@@ -1,5 +1,12 @@
 <template>
   <div class="home-page">
+    <!-- Animated background canvas (decorative) -->
+    <div class="bg-canvas" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
     <div class="home-body">
 
       <!-- Hero logo -->
@@ -106,8 +113,73 @@ function onSelectSpace(space) {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #efebe4;
+  background: linear-gradient(135deg, #efebe4 0%, #e4ddd4 40%, #eae3f0 75%, #e0eae8 100%);
+  background-size: 300% 300%;
+  animation: bgDrift 14s ease infinite;
   overflow: hidden;
+  position: relative;
+}
+
+/* ── Animated gradient drift ── */
+@keyframes bgDrift {
+  0%   { background-position: 0%   0%;   }
+  25%  { background-position: 100% 0%;   }
+  50%  { background-position: 100% 100%; }
+  75%  { background-position: 0%   100%; }
+  100% { background-position: 0%   0%;   }
+}
+
+/* ── Floating orb layer ── */
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+}
+
+.orb-1 {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(100, 160, 245, 0.22), transparent 70%);
+  top: -100px; left: -100px;
+  animation: floatA 13s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(220, 160, 200, 0.2), transparent 70%);
+  bottom: -60px; right: -60px;
+  animation: floatB 17s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(120, 210, 190, 0.18), transparent 70%);
+  top: 45%; left: 55%;
+  animation: floatA 20s ease-in-out infinite 5s;
+}
+
+@keyframes floatA {
+  0%, 100% { transform: translate(0,   0);    }
+  33%       { transform: translate(28px, -22px); }
+  66%       { transform: translate(-18px, 32px); }
+}
+
+@keyframes floatB {
+  0%, 100% { transform: translate(0,   0);    }
+  33%       { transform: translate(-30px, 20px); }
+  66%       { transform: translate(22px, -28px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page { animation: none; }
+  .orb       { animation: none; }
 }
 
 /* ── Scrollable body ── */
@@ -119,6 +191,8 @@ function onSelectSpace(space) {
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Hero logo ── */
@@ -175,6 +249,8 @@ function onSelectSpace(space) {
   font-size: 12px;
   color: #9aa0ad;
   border-top: 1px solid #e2ddd5;
-  background: #efebe4;
+  background: transparent;
+  position: relative;
+  z-index: 1;
 }
 </style>
