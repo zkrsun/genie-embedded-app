@@ -14,3 +14,5 @@ env:
     value: '01f1368e743d1d80afe987959cc94fae'
   - name: 'GENIE_SPACE_MACRO'
     value: '01f08fa61d681eb4a766b618b504d83a'
+  - name: 'GENIE_SPACE_FIN_PNL'
+    value: '01f134cca79e13ceac802dca22151f1f'
