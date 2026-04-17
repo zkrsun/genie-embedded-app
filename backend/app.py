@@ -46,13 +46,14 @@ DATABRICKS_HOST = _env("DATABRICKS_HOST").rstrip("/")
 WORKSPACE_ID    = _env("WORKSPACE_ID")
 
 SPACES = [
-    {"bu": "SBFGHQ", "spaces": [
+    {"bu": "Global", "spaces": [
         {"name": "RMS",     "id": _env("GENIE_SPACE_RMS")},
         {"name": "SELLIN",  "id": _env("GENIE_SPACE_SELLIN")},
         {"name": "SELLOUT", "id": _env("GENIE_SPACE_SELLOUT")},
         {"name": "MACRO",   "id": _env("GENIE_SPACE_MACRO")},
+        {"name": "FIN-P&L",   "id": _env("GENIE_SPACE_FIN_PNL")},
     ]},
-    {"bu": "SBFA", "spaces": [
+    {"bu": "Asia", "spaces": [
         {"name": "MACRO",   "id": _env("GENIE_SPACE_MACRO")},
     ]},
 ]
