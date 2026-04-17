@@ -54,7 +54,13 @@ SPACES = [
         {"name": "FIN-P&L",   "id": _env("GENIE_SPACE_FIN_PNL")},
     ]},
     {"bu": "Asia", "spaces": [
-        {"name": "MACRO",   "id": _env("GENIE_SPACE_MACRO")},
+        
+    ]},
+    {"bu": "Europe", "spaces": [
+        
+    ]},
+    {"bu": "Oceania", "spaces": [
+        
     ]},
 ]
 
