@@ -10,7 +10,19 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { store } from '../store.js'
+
+const router = useRouter()
+
+onMounted(() => {
+  console.log('[GenieView] activeSpace =', JSON.stringify(store.activeSpace))
+  if (!store.activeSpace?.url) {
+    console.warn('[GenieView] No active space URL — redirecting to home')
+    router.replace({ name: 'home' })
+  }
+})
 </script>
 
 <style scoped>
@@ -19,7 +31,6 @@ import { store } from '../store.js'
   width: 100%;
   height: 100%;
   border: none;
-  /* Prevent parent background bleeding through the transparent iframe body */
   background: #ffffff;
 }
 </style>
