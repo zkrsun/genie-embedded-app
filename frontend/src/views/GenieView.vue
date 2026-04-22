@@ -3,7 +3,7 @@
     :key="store.activeSpace?.url"
     :src="store.activeSpace?.url"
     allow="clipboard-write"
-    sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-modals allow-pointer-lock allow-presentation"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-modals allow-pointer-lock allow-presentation allow-storage-access-by-user-activation"
     class="genie-frame"
     title="Genie Space"
   />

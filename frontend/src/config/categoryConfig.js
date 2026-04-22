@@ -314,7 +314,7 @@ export const categoryIcons = {
       }
     ]
   },
-  'FIN-P&L': {
+  'P&L': {
     viewBox: '0 0 1024 1024',
     paths: [
       {

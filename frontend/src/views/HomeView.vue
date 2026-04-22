@@ -38,19 +38,35 @@
 
       <!-- Content -->
       <template v-else>
-        <BuFilter :bu-list="buNames" v-model="activeBu" />
+        <!-- Level 1: BU -->
+        <BuFilter :items="buNames" v-model="activeBu" label="Business Unit" />
 
+        <!-- Level 2: Domain (hidden when BU = All) -->
+        <BuFilter
+          v-if="activeBu !== 'All'"
+          :items="domainNames"
+          v-model="activeDomain"
+          label="Domain"
+          :small="true"
+        />
+
+        <!-- Level 3: Spaces -->
         <div v-if="currentSpaces.length" class="space-grid">
           <SpaceCard
             v-for="space in currentSpaces"
-            :key="space.name"
+            :key="space.code"
             :space="space"
-            :bu="activeBu"
+            :bu="space._bu"
+            :domain="space._domain"
             @select="onSelectSpace"
           />
         </div>
         <div v-else class="state-view">
-          <p class="state-text">No spaces configured for {{ activeBu }}.</p>
+          <p class="state-text">
+            No spaces configured for
+            {{ activeBu === 'All' ? 'any BU' : activeBu }}
+            <template v-if="activeBu !== 'All' && activeDomain !== 'All'"> / {{ activeDomain }}</template>.
+          </p>
         </div>
       </template>
 
@@ -64,27 +80,69 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { store } from '../store.js'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { store, setActiveSpace } from '../store.js'
 import BuFilter  from '../components/BuFilter.vue'
 import SpaceCard from '../components/SpaceCard.vue'
 import naviIcon  from '../../icon/navi.svg'
 
-const router   = useRouter()
-const activeBu = ref(null)
+const router      = useRouter()
+const route       = useRoute()
+const activeBu     = ref('All')
+const activeDomain = ref('All')
 
-const buNames = computed(() => store.buList.map(b => b.bu))
+const ALL = 'All'
 
+// Level 1: BU names — "All" first, then each BU
+const buNames = computed(() => [ALL, ...store.buList.map(b => b.name)])
+
+// Level 2: domains of the selected BU
+const currentDomains = computed(() => {
+  if (activeBu.value === ALL) return []
+  const bu = store.buList.find(b => b.name === activeBu.value)
+  return bu?.domains ?? []
+})
+// "All" + domain names; hidden entirely when BU = All
+const domainNames = computed(() => [ALL, ...currentDomains.value.map(d => d.name)])
+
+// Level 3: spaces annotated with their BU and domain names for the card subtitle
 const currentSpaces = computed(() => {
-  const entry = store.buList.find(b => b.bu === activeBu.value)
-  return entry?.spaces ?? []
+  if (activeBu.value === ALL) {
+    return store.buList.flatMap(b =>
+      b.domains.flatMap(d =>
+        d.spaces.map(s => ({ ...s, _bu: b.name, _domain: d.name }))
+      )
+    )
+  }
+  const bu = store.buList.find(b => b.name === activeBu.value)
+  if (!bu) return []
+  if (activeDomain.value === ALL) {
+    return bu.domains.flatMap(d =>
+      d.spaces.map(s => ({ ...s, _bu: bu.name, _domain: d.name }))
+    )
+  }
+  const domain = bu.domains.find(d => d.name === activeDomain.value)
+  return (domain?.spaces ?? []).map(s => ({ ...s, _bu: bu.name, _domain: domain.name }))
 })
 
+// When BU changes, reset domain to "All"
+watch(activeBu, () => {
+  activeDomain.value = ALL
+})
+
+async function _applyQuery() {
+  const qBu     = route.query.bu     ?? ALL
+  const qDomain = route.query.domain ?? ALL
+  activeBu.value = qBu
+  // wait for watch(activeBu) to fire and reset domain, then override
+  await nextTick()
+  activeDomain.value = qDomain
+}
+
 onMounted(async () => {
-  // Only fetch once; subsequent visits to HomeView reuse cached data
   if (store.buList.length) {
-    activeBu.value = store.buList[0].bu
+    await _applyQuery()
     return
   }
   store.loading = true
@@ -93,7 +151,7 @@ onMounted(async () => {
     const res = await fetch('/api/all')
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     store.buList = await res.json()
-    activeBu.value = store.buList[0]?.bu ?? null
+    await _applyQuery()
   } catch (e) {
     store.error = `Failed to load data: ${e.message}`
   } finally {
@@ -102,7 +160,7 @@ onMounted(async () => {
 })
 
 function onSelectSpace(space) {
-  store.activeSpace = { ...space, bu: activeBu.value }
+  setActiveSpace({ ...space, bu: space._bu, domain: space._domain })
   router.push({ name: 'genie' })
 }
 </script>
