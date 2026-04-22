@@ -12,7 +12,15 @@
         <span class="bc-sep">›</span>
         <span class="bc-current">{{ store.activeSpace?.name }}</span>
         <span class="bc-sep">·</span>
-        <span class="bc-bu">{{ store.activeSpace?.bu }}</span>
+        <RouterLink
+          class="bc-bu"
+          :to="{ name: 'home', query: { bu: store.activeSpace?.bu } }"
+        >{{ store.activeSpace?.bu }}</RouterLink>
+        <span class="bc-sep">·</span>
+        <RouterLink
+          class="bc-domain"
+          :to="{ name: 'home', query: { bu: store.activeSpace?.bu, domain: store.activeSpace?.domain } }"
+        >{{ store.activeSpace?.domain }}</RouterLink>
       </nav>
 
       <div class="spacer" />
@@ -115,7 +123,11 @@ body {
 .back-link:hover { color: #1c1f26; }
 .bc-sep     { color: #c8c3bb; font-size: 14px; }
 .bc-current { font-size: 13px; font-weight: 600; color: #1c1f26; }
-.bc-bu      { font-size: 11px; color: #9aa0ad; text-transform: uppercase; letter-spacing: 0.06em; }
+.bc-bu,.bc-domain {
+  font-size: 11px; color: #9aa0ad; text-transform: uppercase; letter-spacing: 0.06em;
+  text-decoration: none; transition: color 0.15s; cursor: pointer;
+}
+.bc-bu:hover,.bc-domain:hover { color: #1c1f26; }
 
 /* Action buttons */
 .navbar-actions { display: flex; align-items: center; gap: 8px; }

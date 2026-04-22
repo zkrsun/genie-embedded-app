@@ -21,7 +21,7 @@
 
     <div class="card-body">
       <div class="card-name">{{ space.name }}</div>
-      <div class="card-bu">{{ bu }}</div>
+      <div class="card-meta">{{ bu }} · {{ domain }}</div>
     </div>
 
     <svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -36,8 +36,9 @@ import { computed } from 'vue'
 import { getCategoryIconConfig } from '../config/categoryConfig.js'
 
 const props = defineProps({
-  space: { type: Object, required: true },  // { name, url }
-  bu:    { type: String, required: true },
+  space:  { type: Object, required: true },  // { name, code, url }
+  bu:     { type: String, required: true },
+  domain: { type: String, required: true },
 })
 defineEmits(['select'])
 
@@ -45,7 +46,6 @@ const iconConfig = computed(() => getCategoryIconConfig(props.space.name))
 </script>
 
 <style scoped>
-/* Matches Databricks Genie space card style */
 .space-card {
   display: flex;
   align-items: center;
@@ -82,7 +82,7 @@ const iconConfig = computed(() => getCategoryIconConfig(props.space.name))
 
 .card-body  { flex: 1; min-width: 0; }
 .card-name  { font-size: 14px; font-weight: 600; color: #1c1f26; }
-.card-bu    { font-size: 11px; color: #9aa0ad; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+.card-meta  { font-size: 11px; color: #9aa0ad; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
 
 .card-arrow { width: 15px; height: 15px; color: #c8c3bb; flex-shrink: 0; transition: color 0.15s, transform 0.15s; }
 .space-card:hover .card-arrow { color: #1b6feb; transform: translateX(3px); }

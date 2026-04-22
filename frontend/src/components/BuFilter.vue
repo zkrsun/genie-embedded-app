@@ -1,32 +1,33 @@
 <template>
-  <div class="bu-filter" role="tablist" aria-label="Business Unit">
+  <div class="pill-filter" role="tablist" :aria-label="label">
     <button
-      v-for="bu in buList"
-      :key="bu"
+      v-for="item in items"
+      :key="item"
       role="tab"
-      class="bu-pill"
-      :class="{ active: modelValue === bu }"
-      :aria-selected="modelValue === bu"
-      @click="$emit('update:modelValue', bu)"
+      class="pill"
+      :class="{ active: modelValue === item, small }"
+      :aria-selected="modelValue === item"
+      @click="$emit('update:modelValue', item)"
     >
-      {{ bu }}
+      {{ item }}
     </button>
   </div>
 </template>
 
 <script setup>
 defineProps({
-  buList:     { type: Array,  required: true },
+  items:      { type: Array,  required: true },
   modelValue: { type: String, default: null },
+  label:      { type: String, default: 'Filter' },
+  small:      { type: Boolean, default: false },
 })
 defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>
-.bu-filter { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill-filter { display: flex; gap: 6px; flex-wrap: wrap; }
 
-/* Matches Databricks "For you | Dashboards | Genie spaces | Apps" pills */
-.bu-pill {
+.pill {
   padding: 5px 16px;
   border-radius: 20px;
   border: 1px solid #d0cbc2;
@@ -38,6 +39,7 @@ defineEmits(['update:modelValue'])
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
-.bu-pill:hover  { background: #ffffff; border-color: #b8b2a8; color: #1c1f26; }
-.bu-pill.active { background: #1c1f26; border-color: #1c1f26; color: #ffffff; }
+.pill.small { padding: 3px 12px; font-size: 12px; }
+.pill:hover  { background: #ffffff; border-color: #b8b2a8; color: #1c1f26; }
+.pill.active { background: #1c1f26; border-color: #1c1f26; color: #ffffff; }
 </style>
