@@ -82,7 +82,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { store, setActiveSpace } from '../store.js'
+import { store } from '../store.js'
 import BuFilter  from '../components/BuFilter.vue'
 import SpaceCard from '../components/SpaceCard.vue'
 import naviIcon  from '../../icon/navi.svg'
@@ -160,8 +160,7 @@ onMounted(async () => {
 })
 
 function onSelectSpace(space) {
-  setActiveSpace({ ...space, bu: space._bu, domain: space._domain })
-  router.push({ name: 'genie' })
+  router.push({ name: 'genie', params: { bu: space._bu, domain: space._domain, space: space.code } })
 }
 </script>
 
