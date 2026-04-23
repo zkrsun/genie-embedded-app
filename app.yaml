@@ -15,4 +15,4 @@ env:
   - name: 'LAKEBASE_USER'
     value: 'sbfi_admin'
   - name: 'LAKEBASE_PASSWORD'
-    value: ''
+    value: 'DBX@Lakebase+sbfi@2025'
