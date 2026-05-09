@@ -24,34 +24,6 @@
       </nav>
 
       <div class="spacer" />
-
-      <!-- Action buttons -->
-      <div class="navbar-actions">
-        <RouterLink
-          :to="{ name: 'home' }"
-          class="nav-btn"
-          :class="{ 'nav-btn--active': route.name === 'home' || route.name === 'genie' }"
-        >
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <ellipse cx="12" cy="7" rx="8" ry="3"/>
-            <path d="M4 7v5c0 1.657 3.582 3 8 3s8-1.343 8-3V7"/>
-            <path d="M4 12v5c0 1.657 3.582 3 8 3s8-1.343 8-3v-5"/>
-          </svg>
-          Data Download
-        </RouterLink>
-
-        <button class="nav-btn nav-btn--analysis" @click="openAnalysis">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-          </svg>
-          Analysis
-          <svg class="btn-icon-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-        </button>
-      </div>
     </header>
 
     <!-- ── Page content ── -->
@@ -65,10 +37,6 @@ import { store } from './store.js'
 import naviIcon from '../icon/navi.svg'
 
 const route = useRoute()
-
-function openAnalysis() {
-  window.open('https://data-navi-2205520462893510.10.azure.databricksapps.com/', '_blank')
-}
 </script>
 
 <style>
@@ -128,27 +96,6 @@ body {
   text-decoration: none; transition: color 0.15s; cursor: pointer;
 }
 .bc-bu:hover,.bc-domain:hover { color: #1c1f26; }
-
-/* Action buttons */
-.navbar-actions { display: flex; align-items: center; gap: 8px; }
-
-.nav-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 0 13px; height: 32px;
-  border: 1px solid #d8d3cb; border-radius: 6px;
-  background: #ffffff;
-  font-family: inherit; font-size: 13px; font-weight: 500; color: #5c6070;
-  cursor: pointer; white-space: nowrap; text-decoration: none;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-.nav-btn:hover         { background: #f5f2ee; color: #1c1f26; border-color: #c0bab1; }
-.nav-btn--active       { background: #1c1f26; color: #ffffff;  border-color: #1c1f26; }
-.nav-btn--active:hover { background: #2e3240; border-color: #2e3240; }
-.nav-btn--analysis     { background: #1b6feb; color: #ffffff;  border-color: #1b6feb; }
-.nav-btn--analysis:hover { background: #1558cc; border-color: #1558cc; }
-
-.btn-icon     { width: 14px; height: 14px; flex-shrink: 0; }
-.btn-icon-ext { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.7; }
 
 /* Page content area */
 .page-content { flex: 1; overflow: hidden; background: #efebe4; }

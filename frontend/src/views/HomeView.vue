@@ -16,7 +16,7 @@
 
       <!-- Title -->
       <div class="home-header">
-        <h1 class="home-title">Data Download</h1>
+        <h1 class="home-title">Data Explorer</h1>
         <p class="home-subtitle">Select a Business Unit and Genie Space to start your analysis</p>
       </div>
 

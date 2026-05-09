@@ -7,6 +7,7 @@ export default defineConfig({
     outDir: 'dist',
   },
   server: {
+    host: '127.0.0.1',
     // Local dev: proxy /api requests to FastAPI running on :8000
     proxy: {
       '/api': {
