@@ -5,7 +5,7 @@ A FastAPI + Vue 3 web application that embeds multiple Databricks Genie spaces i
 ## Features
 
 - Embed multiple Genie spaces (RMS, SELLIN, SELLOUT) in one page
-- Tab navigation to switch between spaces
+- Home page with BU filter and space cards; click a card to open the embedded Genie iframe
 - Light-themed UI built with Vue 3 + Vite
 - Deployable to Databricks Apps
 
@@ -23,7 +23,14 @@ A FastAPI + Vue 3 web application that embeds multiple Databricks Genie spaces i
     ├── index.html
     └── src/
         ├── main.js
-        └── App.vue       # Navbar tabs + Genie iframe
+        ├── App.vue              # Navbar (brand + breadcrumb) + RouterView
+        ├── store.js
+        ├── views/
+        │   ├── HomeView.vue     # BU filter + space cards
+        │   └── GenieView.vue    # Embedded Genie iframe
+        └── components/
+            ├── BuFilter.vue
+            └── SpaceCard.vue
 ```
 
 ## Prerequisites
