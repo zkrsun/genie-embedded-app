@@ -4,7 +4,7 @@
     :key="spaceUrl"
     :src="spaceUrl"
     allow="clipboard-write"
-    sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-modals allow-pointer-lock allow-presentation allow-storage-access-by-user-activation"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-modals allow-pointer-lock allow-presentation allow-storage-access-by-user-activation allow-popups allow-popups-to-escape-sandbox"
     class="genie-frame"
     title="Genie Space"
   />
