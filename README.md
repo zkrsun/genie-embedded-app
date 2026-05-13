@@ -26,10 +26,9 @@ A FastAPI + Vue 3 web application that embeds multiple Databricks Genie spaces i
         ├── App.vue              # Navbar (brand + breadcrumb) + RouterView
         ├── store.js
         ├── views/
-        │   ├── HomeView.vue     # BU filter + space cards
+        │   ├── HomeView.vue     # Space cards grid
         │   └── GenieView.vue    # Embedded Genie iframe
         └── components/
-            ├── BuFilter.vue
             └── SpaceCard.vue
 ```
 

@@ -1,8 +1,8 @@
 import { reactive } from 'vue'
 
 export const store = reactive({
-  /** [{ name, code, domains: [{ name, code, spaces: [{ name, code, url }] }] }] */
-  buList: [],
+  /** [{ name, code, url, description, icon_code }] */
+  spaces: [],
   loading: true,
   error: null,
   activeSpace: null,
