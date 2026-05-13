@@ -16,8 +16,8 @@
 
       <!-- Title -->
       <div class="home-header">
-        <h1 class="home-title">Data Explorer</h1>
-        <p class="home-subtitle">Select a Business Unit and Genie Space to start your analysis</p>
+        <h1 class="home-title">Data Navi</h1>
+        <p class="home-subtitle">DataNavi is a multi-agent conversational agent you can ask any question on SBF data. Think of it like a <strong class="subtitle-highlight">ChatGPT for internal data</strong>.</p>
       </div>
 
       <!-- Loading state -->
@@ -38,35 +38,16 @@
 
       <!-- Content -->
       <template v-else>
-        <!-- Level 1: BU -->
-        <BuFilter :items="buNames" v-model="activeBu" label="Business Unit" />
-
-        <!-- Level 2: Domain (hidden when BU = All) -->
-        <BuFilter
-          v-if="activeBu !== 'All'"
-          :items="domainNames"
-          v-model="activeDomain"
-          label="Domain"
-          :small="true"
-        />
-
-        <!-- Level 3: Spaces -->
-        <div v-if="currentSpaces.length" class="space-grid">
+        <div v-if="store.spaces.length" class="space-grid">
           <SpaceCard
-            v-for="space in currentSpaces"
+            v-for="space in store.spaces"
             :key="space.code"
             :space="space"
-            :bu="space._bu"
-            :domain="space._domain"
             @select="onSelectSpace"
           />
         </div>
         <div v-else class="state-view">
-          <p class="state-text">
-            No spaces configured for
-            {{ activeBu === 'All' ? 'any BU' : activeBu }}
-            <template v-if="activeBu !== 'All' && activeDomain !== 'All'"> / {{ activeDomain }}</template>.
-          </p>
+          <p class="state-text">No spaces configured.</p>
         </div>
       </template>
 
@@ -80,69 +61,17 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 import { store } from '../store.js'
-import BuFilter  from '../components/BuFilter.vue'
 import SpaceCard from '../components/SpaceCard.vue'
 import naviIcon  from '../../icon/navi.svg'
 
-const router      = useRouter()
-const route       = useRoute()
-const activeBu     = ref('All')
-const activeDomain = ref('All')
-
-const ALL = 'All'
-
-// Level 1: BU names — "All" first, then each BU
-const buNames = computed(() => [ALL, ...store.buList.map(b => b.name)])
-
-// Level 2: domains of the selected BU
-const currentDomains = computed(() => {
-  if (activeBu.value === ALL) return []
-  const bu = store.buList.find(b => b.name === activeBu.value)
-  return bu?.domains ?? []
-})
-// "All" + domain names; hidden entirely when BU = All
-const domainNames = computed(() => [ALL, ...currentDomains.value.map(d => d.name)])
-
-// Level 3: spaces annotated with their BU and domain names for the card subtitle
-const currentSpaces = computed(() => {
-  if (activeBu.value === ALL) {
-    return store.buList.flatMap(b =>
-      b.domains.flatMap(d =>
-        d.spaces.map(s => ({ ...s, _bu: b.name, _domain: d.name }))
-      )
-    )
-  }
-  const bu = store.buList.find(b => b.name === activeBu.value)
-  if (!bu) return []
-  if (activeDomain.value === ALL) {
-    return bu.domains.flatMap(d =>
-      d.spaces.map(s => ({ ...s, _bu: bu.name, _domain: d.name }))
-    )
-  }
-  const domain = bu.domains.find(d => d.name === activeDomain.value)
-  return (domain?.spaces ?? []).map(s => ({ ...s, _bu: bu.name, _domain: domain.name }))
-})
-
-// When BU changes, reset domain to "All"
-watch(activeBu, () => {
-  activeDomain.value = ALL
-})
-
-async function _applyQuery() {
-  const qBu     = route.query.bu     ?? ALL
-  const qDomain = route.query.domain ?? ALL
-  activeBu.value = qBu
-  // wait for watch(activeBu) to fire and reset domain, then override
-  await nextTick()
-  activeDomain.value = qDomain
-}
+const router = useRouter()
 
 onMounted(async () => {
-  if (store.buList.length) {
-    await _applyQuery()
+  if (store.spaces.length) {
+    store.loading = false
     return
   }
   store.loading = true
@@ -150,8 +79,7 @@ onMounted(async () => {
   try {
     const res = await fetch('/api/all')
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    store.buList = await res.json()
-    await _applyQuery()
+    store.spaces = await res.json()
   } catch (e) {
     store.error = `Failed to load data: ${e.message}`
   } finally {
@@ -160,7 +88,7 @@ onMounted(async () => {
 })
 
 function onSelectSpace(space) {
-  router.push({ name: 'genie', params: { bu: space._bu, domain: space._domain, space: space.code } })
+  router.push({ name: 'genie', params: { space: space.code } })
 }
 </script>
 
@@ -263,16 +191,17 @@ function onSelectSpace(space) {
 
 /* ── Title ── */
 .home-header { text-align: center; }
-.home-title    { font-size: 20px; font-weight: 600; color: #1c1f26; letter-spacing: -0.015em; }
-.home-subtitle { font-size: 13px; color: #9aa0ad; margin-top: 3px; }
+.home-title    { font-size: 24px; font-weight: 600; color: #1c1f26; letter-spacing: -0.015em; }
+.home-subtitle { font-size: 16px; color: #9aa0ad; margin-top: 3px; }
+.subtitle-highlight { color: #1c1f26; font-weight: 700; }
 
 /* ── Space cards ── */
 .space-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
   width: 100%;
-  max-width: 960px;
+  max-width: 1100px;
 }
 
 /* ── State views ── */
@@ -304,7 +233,7 @@ function onSelectSpace(space) {
   text-align: center;
   padding: 10px 0 14px;
   font-size: 12px;
-  color: #9aa0ad;
+  color: #1c1f26;
   border-top: 1px solid #e2ddd5;
   background: transparent;
   position: relative;

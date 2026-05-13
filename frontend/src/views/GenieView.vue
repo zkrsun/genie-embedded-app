@@ -23,29 +23,32 @@ const router   = useRouter()
 const spaceUrl = ref(null)
 
 onMounted(async () => {
-  if (!store.buList.length) {
+  if (!store.spaces.length) {
     try {
       const res = await fetch('/api/all')
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      store.buList = await res.json()
+      store.spaces = await res.json()
     } catch {
       router.replace({ name: 'home' })
       return
     }
   }
 
-  const { bu, domain, space: spaceCode } = route.params
-  const buObj     = store.buList.find(b => b.name === bu)
-  const domainObj = buObj?.domains.find(d => d.name === domain)
-  const spaceObj  = domainObj?.spaces.find(s => s.code === spaceCode)
-
+  const spaceObj = store.spaces.find(s => s.code === route.params.space)
   if (!spaceObj) {
     router.replace({ name: 'home' })
     return
   }
 
   spaceUrl.value = spaceObj.url
-  setActiveSpace({ ...spaceObj, bu, domain })
+  setActiveSpace(spaceObj)
+
+  fetch('/api/log/space-access', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ space_code: spaceObj.code }),
+    keepalive: true,
+  }).catch(() => {})
 })
 </script>
 
