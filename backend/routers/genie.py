@@ -1,12 +1,13 @@
 from typing import List
 
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter, HTTPException, Request, Response
 from pydantic import BaseModel
 
 from auth import user_email as _user_email_helper
 from config import DATABRICKS_HOST, WORKSPACE_ID
 from database import get_conn
 from models import SpaceOut
+from pbi_service import get_embed_params as _get_pbi_embed_params
 
 router = APIRouter(prefix="/api")
 
@@ -79,3 +80,12 @@ def log_space_access(payload: SpaceAccessIn, request: Request) -> Response:
             )
         conn.commit()
     return Response(status_code=204)
+
+
+@router.get("/pbi/embed")
+def get_pbi_embed():
+    """Return PowerBI embed params for the temporary test_pl report."""
+    try:
+        return _get_pbi_embed_params()
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
