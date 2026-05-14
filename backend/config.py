@@ -12,7 +12,7 @@ def _load_yaml_env(yaml_path: str) -> dict:
         return {}
     if not os.path.isfile(yaml_path):
         return {}
-    with open(yaml_path) as f:
+    with open(yaml_path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
     return {item["name"]: str(item["value"]) for item in data.get("env", [])}
 
@@ -37,3 +37,9 @@ LAKEBASE_PORT: int = int(env("LAKEBASE_PORT", "5432"))
 LAKEBASE_DATABASE: str = env("LAKEBASE_DATABASE", "postgres")
 LAKEBASE_USER: str = env("LAKEBASE_USER")
 LAKEBASE_PASSWORD: str = env("LAKEBASE_PASSWORD")
+
+PBI_TENANT_ID: str = env("PBI_TENANT_ID")
+PBI_CLIENT_ID: str = env("PBI_CLIENT_ID")
+PBI_CLIENT_SECRET: str = env("PBI_CLIENT_SECRET")
+PBI_WORKSPACE_ID: str = env("PBI_WORKSPACE_ID")
+PBI_REPORT_ID: str = env("PBI_REPORT_ID")
