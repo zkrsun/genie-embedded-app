@@ -153,20 +153,10 @@ const agentPrompts = [
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: linear-gradient(135deg, #efebe4 0%, #e4ddd4 40%, #eae3f0 75%, #e0eae8 100%);
-  background-size: 300% 300%;
-  animation: bgDrift 14s ease infinite;
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
   overflow: hidden;
   position: relative;
 }
-@keyframes bgDrift {
-  0%   { background-position: 0%   0%;   }
-  25%  { background-position: 100% 0%;   }
-  50%  { background-position: 100% 100%; }
-  75%  { background-position: 0%   100%; }
-  100% { background-position: 0%   0%;   }
-}
-@media (prefers-reduced-motion: reduce) { .gs-page { animation: none; } }
 
 .gs-body {
   flex: 1;
@@ -189,25 +179,25 @@ const agentPrompts = [
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #0892ab;
+  color: var(--color-primary-dark);
   margin-bottom: 12px;
 }
 .gs-h1 {
-  font-size: 34px;
-  font-weight: 600;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
   letter-spacing: -0.025em;
-  line-height: 1.12;
-  color: #1c1f26;
+  line-height: 1.15;
+  color: var(--color-text-primary);
   margin: 0 0 10px;
 }
 .gs-sub {
   font-size: 15px;
-  color: #5c6070;
+  color: var(--color-text-secondary);
   max-width: 720px;
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0;
 }
-.gs-sub strong { color: #1c1f26; font-weight: 600; }
+.gs-sub strong { color: var(--color-text-primary); font-weight: 600; }
 
 /* ── Grid (two-column) ── */
 .gs-grid {
@@ -223,19 +213,19 @@ const agentPrompts = [
 
 /* ── Mode panel card ── */
 .mode-panel {
-  background: #ffffff;
-  border: 1px solid #e2ddd5;
-  border-radius: 14px;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   padding: 22px 22px 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  transition: box-shadow 0.18s, border-color 0.18s, transform 0.12s;
+  transition: box-shadow var(--transition-base), border-color var(--transition-base), transform var(--transition-fast);
 }
 .mode-panel:hover {
-  border-color: #b8b2a8;
-  box-shadow: 0 4px 18px rgba(28, 31, 38, 0.06);
-  transform: translateY(-1px);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 .mode-panel.agent { border-color: #e9d5ff; }
 .mode-panel.agent:hover { border-color: #c9a8f5; }
@@ -255,7 +245,7 @@ const agentPrompts = [
   flex-shrink: 0;
 }
 .mode-emblem svg { width: 20px; height: 20px; }
-.mode-emblem.chat  { background: linear-gradient(135deg, #0bb3cf 0%, #1ad3e8 100%); }
+.mode-emblem.chat  { background: linear-gradient(135deg, var(--color-primary) 0%, #1ad3e8 100%); }
 .mode-emblem.agent { background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); }
 
 .mode-titles h3 {
@@ -263,28 +253,28 @@ const agentPrompts = [
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: #1c1f26;
+  color: var(--color-text-primary);
 }
 .mode-titles .tagline {
   font-size: 12px;
-  color: #8993a3;
+  color: var(--color-text-tertiary);
   margin-top: 2px;
 }
 
 .mode-body {
   margin: 0;
   font-size: 13.5px;
-  color: #5b6473;
-  line-height: 1.55;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
 }
-.mode-body strong { color: #1c1f26; font-weight: 600; }
+.mode-body strong { color: var(--color-text-primary); font-weight: 600; }
 
 .mode-ideal {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #0892ab;
+  color: var(--color-primary-dark);
   margin-top: 2px;
 }
 .mode-panel.agent .mode-ideal { color: #6b21a8; }
@@ -299,7 +289,7 @@ const agentPrompts = [
 }
 .mode-bullets li {
   font-size: 13px;
-  color: #1c1f26;
+  color: var(--color-text-primary);
   line-height: 1.5;
   padding-left: 22px;
   position: relative;
@@ -312,26 +302,26 @@ const agentPrompts = [
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #0bb3cf;
+  background: var(--color-primary);
 }
 .mode-panel.agent .mode-bullets li::before { background: #a855f7; }
 
 /* ── Example block ── */
 .example {
-  background: #fbfcfd;
-  border: 1px solid #e6e8ec;
-  border-radius: 10px;
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   padding: 12px 14px;
   font-size: 12.5px;
-  color: #1c1f26;
-  line-height: 1.55;
+  color: var(--color-text-primary);
+  line-height: 1.6;
 }
 .example .who {
   font-size: 10.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #8993a3;
+  color: var(--color-text-tertiary);
   margin-bottom: 4px;
 }
 
@@ -346,14 +336,14 @@ const agentPrompts = [
 }
 .section-title {
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
-  color: #1c1f26;
+  color: var(--color-text-primary);
   margin: 0;
 }
 .section-sub {
   font-size: 13px;
-  color: #5c6070;
+  color: var(--color-text-secondary);
   margin-top: 4px;
 }
 
@@ -361,7 +351,7 @@ const agentPrompts = [
 .mode-panel.compact h3.compact-title {
   font-size: 15px;
   font-weight: 600;
-  color: #1c1f26;
+  color: var(--color-text-primary);
 }
 .prompt-stack {
   display: flex;
@@ -375,8 +365,10 @@ const agentPrompts = [
   text-align: center;
   padding: 10px 0 14px;
   font-size: 12px;
-  color: #1c1f26;
-  border-top: 1px solid #e2ddd5;
-  background: transparent;
+  color: var(--color-text-secondary);
+  border-top: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 </style>

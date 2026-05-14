@@ -29,10 +29,9 @@
           </a>
         </li>
         <li role="none">
-          <a href="#" class="nav-link is-disabled" role="menuitem" @click.prevent aria-disabled="true">
+          <RouterLink to="/catalog" class="nav-link" role="menuitem" active-class="active">
             <span class="nav-text">Catalog</span>
-            <span class="soon-badge">Soon</span>
-          </a>
+          </RouterLink>
         </li>
       </ul>
     </header>
@@ -64,8 +63,8 @@ import naviIcon from '../icon/navi.svg'
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #efebe4;
-  color: #1c1f26;
+  background: var(--color-bg-light);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -77,16 +76,22 @@ body {
   align-items: center;
   padding: 0 24px 0 56px;
   height: 72px;
-  background: #ffffff;
-  border-bottom: 1px solid #e2ddd5;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
   flex-shrink: 0;
   gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
 }
 
 .navbar-brand { display: flex; align-items: center; flex-shrink: 0; gap: 12px; }
 .brand-icon   { display: block; width: 51px; height: 51px; border-radius: 10px; object-fit: contain; }
-.brand-name   { font-size: 18px; font-weight: 600; color: #1c1f26; letter-spacing: -0.01em; }
-.brand-tagline { font-size: 13px; color: #9aa0ad; font-weight: 500; }
+.brand-name   { font-size: 18px; font-weight: 600; color: var(--color-text-primary); letter-spacing: -0.01em; }
+.brand-tagline { font-size: 13px; color: var(--color-text-tertiary); font-weight: 500; }
 
 .spacer { flex: 1; }
 
@@ -102,12 +107,12 @@ body {
   align-items: center;
   padding: 8px 14px;
   text-decoration: none;
-  color: #5c6070;
+  color: var(--color-text-secondary);
   font-weight: 500;
   font-size: 14px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   position: relative;
-  transition: color 0.15s, background 0.15s, transform 0.12s;
+  transition: color var(--transition-base), background var(--transition-base), transform var(--transition-fast);
   white-space: nowrap;
 }
 .nav-link::before {
@@ -117,45 +122,45 @@ body {
   left: 50%;
   width: 0;
   height: 2px;
-  background: #1b6feb;
+  background: var(--color-primary);
   transform: translateX(-50%);
-  transition: width 0.18s ease;
+  transition: width var(--transition-base);
 }
 .nav-link:hover {
-  color: #1c1f26;
-  background: #f4f1ea;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
   transform: translateY(-1px);
 }
 .nav-link.active {
-  color: #1b6feb;
-  background: #eef4ff;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
 }
 .nav-link.active::before { width: 70%; }
 .nav-text { line-height: 1.5; }
 
 .nav-link.is-disabled {
   cursor: not-allowed;
-  color: #9aa0ad;
+  color: var(--color-text-tertiary);
 }
 .nav-link.is-disabled:hover {
-  color: #9aa0ad;
+  color: var(--color-text-tertiary);
   background: transparent;
   transform: none;
 }
 .soon-badge {
   margin-left: 6px;
   padding: 1px 7px;
-  background: #fff4d6;
+  background: var(--color-warning-light);
   color: #a37500;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   border: 1px solid #f3e2a8;
   line-height: 1.4;
 }
 
 /* Page content area */
-.page-content { flex: 1; overflow: hidden; background: #efebe4; }
+.page-content { flex: 1; overflow: hidden; background: var(--color-bg-light); }
 </style>

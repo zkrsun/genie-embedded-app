@@ -69,31 +69,31 @@ const hitsLabel = computed(() => {
   flex-direction: column;
   gap: 12px;
   padding: 18px 20px 14px;
-  background: #ffffff;
-  border: 1px solid #e2ddd5;
-  border-radius: 10px;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   cursor: pointer;
   text-align: left;
   font-family: inherit;
   width: 100%;
   min-height: 168px;
-  transition: box-shadow 0.18s, border-color 0.18s, transform 0.12s;
+  transition: box-shadow var(--transition-base), border-color var(--transition-base), transform var(--transition-fast);
 }
 .space-card:hover {
-  border-color: #b8b2a8;
-  box-shadow: 0 2px 12px rgba(28, 31, 38, 0.08);
-  transform: translateY(-1px);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
-.space-card:active { transform: translateY(0); box-shadow: none; }
+.space-card:active { transform: translateY(0); box-shadow: var(--shadow-sm); }
 
 .card-header { display: flex; align-items: center; }
 
 .card-icon-wrap {
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
-  background: #eef4ff;
-  color: #1b6feb;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,12 +102,12 @@ const hitsLabel = computed(() => {
 .card-icon-wrap svg { width: 22px; height: 22px; }
 
 .card-body  { flex: 1; min-width: 0; }
-.card-name  { font-size: 15px; font-weight: 600; color: #1c1f26; }
+.card-name  { font-size: 15px; font-weight: 600; color: var(--color-text-primary); }
 .card-desc  {
-  font-size: 12.5px;
-  color: #5c6070;
+  font-size: 13px;
+  color: var(--color-text-secondary);
   margin-top: 6px;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .card-footer {
@@ -117,27 +117,27 @@ const hitsLabel = computed(() => {
   gap: 8px;
   font-size: 12px;
   font-weight: 500;
-  border-top: 1px solid #f0ece4;
+  border-top: 1px solid var(--color-border-light);
   padding-top: 10px;
 }
 .card-hits {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: #5c6070;
+  color: var(--color-text-secondary);
 }
-.card-hits strong { color: #1c1f26; font-weight: 600; }
-.hit-icon { width: 12px; height: 12px; color: #1b6feb; flex-shrink: 0; }
+.card-hits strong { color: var(--color-text-primary); font-weight: 600; }
+.hit-icon { width: 12px; height: 12px; color: var(--color-primary); flex-shrink: 0; }
 
 .card-open {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #1b6feb;
+  color: var(--color-primary);
   letter-spacing: 0.02em;
-  transition: gap 0.15s;
+  transition: gap var(--transition-base);
 }
-.card-arrow { width: 14px; height: 14px; transition: transform 0.15s; }
+.card-arrow { width: 14px; height: 14px; transition: transform var(--transition-base); }
 .space-card:hover .card-open  { gap: 6px; }
 .space-card:hover .card-arrow { transform: translateX(2px); }
 </style>
