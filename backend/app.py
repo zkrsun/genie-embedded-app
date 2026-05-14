@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
 from config import MODE
+from routers.catalog import router as catalog_router
 from routers.genie import router as genie_router
 
 app = FastAPI(title="Embedded Genie")
@@ -13,11 +14,12 @@ if MODE == "LOCAL":
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
-        allow_methods=["GET"],
+        allow_methods=["GET", "POST"],
         allow_headers=["*"],
     )
 
 app.include_router(genie_router)
+app.include_router(catalog_router)
 
 _dist = os.path.realpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend", "dist")

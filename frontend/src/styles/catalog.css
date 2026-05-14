@@ -1,0 +1,167 @@
+/* Global theme — adopted from open-data-portal/frontend/src/styles/main.css.
+   Applies to the entire app (was scoped to .catalog-root during Phase 1-2). */
+
+:root {
+  /* Primary Colors - Cyan/Teal Theme */
+  --color-primary: #5BC2DC;
+  --color-primary-hover: #4AB0C8;
+  --color-primary-light: rgba(91, 194, 220, 0.1);
+  --color-primary-dark: #3A9EB6;
+
+  --color-secondary: #5BC2DC;
+  --color-secondary-hover: #4AB0C8;
+  --color-secondary-light: rgba(91, 194, 220, 0.1);
+
+  --color-cta: #5BC2DC;
+  --color-cta-hover: #4AB0C8;
+  --color-cta-light: rgba(91, 194, 220, 0.1);
+
+  /* Text */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+
+  /* Backgrounds */
+  --color-bg-light: #f9f9fb;
+  --color-bg-white: #ffffff;
+  --color-bg-subtle: #f1f5f9;
+
+  /* Borders */
+  --color-border: #eeeeee;
+  --color-border-light: #f1f5f9;
+
+  /* Data Viz */
+  --color-success: #22C55E;
+  --color-success-light: rgba(34, 197, 94, 0.1);
+  --color-warning: #F59E0B;
+  --color-warning-light: rgba(245, 158, 11, 0.1);
+  --color-error: #EF4444;
+  --color-error-light: rgba(239, 68, 68, 0.1);
+  --color-info: #5BC2DC;
+  --color-info-light: rgba(91, 194, 220, 0.1);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.15);
+  --shadow-primary: 0 4px 16px rgba(91, 194, 220, 0.2);
+  --shadow-cta: 0 4px 16px rgba(91, 194, 220, 0.2);
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease-out;
+  --transition-base: 0.2s ease-out;
+  --transition-slow: 0.3s ease-out;
+}
+
+/* The .catalog-root wrapper is now a no-op (vars live on :root).
+   Kept as a stable hook in case page-level overrides become useful later. */
+.catalog-root { color: var(--color-text-primary); }
+
+/* ─────────────────────────────────────────────────────────────────────
+   Button system — used by raw <button class="btn btn-primary">
+   inside DataPreview/DownloadButton (which don't go through Button.vue).
+   ───────────────────────────────────────────────────────────────────── */
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1.2;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+.btn:active::before { width: 300px; height: 300px; }
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px var(--color-primary-light);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, var(--color-primary-dark) 100%);
+  box-shadow: var(--shadow-primary);
+  transform: translateY(-2px);
+}
+.btn-primary:active:not(:disabled) { transform: translateY(0); box-shadow: var(--shadow-sm); }
+
+.btn-secondary {
+  background: var(--color-bg-white);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.btn-secondary:active:not(:disabled) { transform: translateY(0); box-shadow: var(--shadow-sm); }
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: none;
+}
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.btn-outline:active:not(:disabled) { transform: translateY(0); }
+
+/* Size variants */
+.btn-sm { padding: 0.5rem 1rem; font-size: 13px; }
+.btn-full-width { width: 100%; }

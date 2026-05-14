@@ -98,20 +98,9 @@ function onSelectSpace(space) {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: linear-gradient(135deg, #efebe4 0%, #e4ddd4 40%, #eae3f0 75%, #e0eae8 100%);
-  background-size: 300% 300%;
-  animation: bgDrift 14s ease infinite;
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
   overflow: hidden;
   position: relative;
-}
-
-/* ── Animated gradient drift ── */
-@keyframes bgDrift {
-  0%   { background-position: 0%   0%;   }
-  25%  { background-position: 100% 0%;   }
-  50%  { background-position: 100% 100%; }
-  75%  { background-position: 0%   100%; }
-  100% { background-position: 0%   0%;   }
 }
 
 /* ── Floating orb layer ── */
@@ -122,49 +111,38 @@ function onSelectSpace(space) {
   z-index: 0;
   overflow: hidden;
 }
-
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(70px);
-}
-
+.orb { position: absolute; border-radius: 50%; filter: blur(70px); }
 .orb-1 {
   width: 380px; height: 380px;
-  background: radial-gradient(circle, rgba(100, 160, 245, 0.22), transparent 70%);
+  background: radial-gradient(circle, rgba(91, 194, 220, 0.25), transparent 70%);
   top: -100px; left: -100px;
   animation: floatA 13s ease-in-out infinite;
 }
-
 .orb-2 {
   width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(220, 160, 200, 0.2), transparent 70%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.18), transparent 70%);
   bottom: -60px; right: -60px;
   animation: floatB 17s ease-in-out infinite;
 }
-
 .orb-3 {
   width: 220px; height: 220px;
-  background: radial-gradient(circle, rgba(120, 210, 190, 0.18), transparent 70%);
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.18), transparent 70%);
   top: 45%; left: 55%;
   animation: floatA 20s ease-in-out infinite 5s;
 }
 
 @keyframes floatA {
-  0%, 100% { transform: translate(0,   0);    }
-  33%       { transform: translate(28px, -22px); }
-  66%       { transform: translate(-18px, 32px); }
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(28px, -22px); }
+  66%      { transform: translate(-18px, 32px); }
 }
-
 @keyframes floatB {
-  0%, 100% { transform: translate(0,   0);    }
-  33%       { transform: translate(-30px, 20px); }
-  66%       { transform: translate(22px, -28px); }
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(-30px, 20px); }
+  66%      { transform: translate(22px, -28px); }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .home-page { animation: none; }
-  .orb       { animation: none; }
+  .orb { animation: none; }
 }
 
 /* ── Scrollable body ── */
@@ -190,16 +168,27 @@ function onSelectSpace(space) {
 }
 
 /* ── Title ── */
-.home-header { text-align: center; }
-.home-title    { font-size: 24px; font-weight: 600; color: #1c1f26; letter-spacing: -0.015em; }
-.home-subtitle { font-size: 16px; color: #9aa0ad; margin-top: 3px; }
-.subtitle-highlight { color: #1c1f26; font-weight: 700; }
+.home-header { text-align: center; max-width: 720px; }
+.home-title {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+.home-subtitle {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+.subtitle-highlight { color: var(--color-text-primary); font-weight: 700; }
 
 /* ── Space cards ── */
 .space-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 14px;
+  gap: 16px;
   width: 100%;
   max-width: 1100px;
 }
@@ -213,14 +202,15 @@ function onSelectSpace(space) {
   gap: 12px;
   padding: 40px 0;
 }
-.state-text  { font-size: 13px; color: #9aa0ad; }
+.state-text  { font-size: 13px; color: var(--color-text-tertiary); }
 .state-icon  { width: 32px; height: 32px; }
-.error-icon  { color: #e5534b; }
+.error-icon  { color: var(--color-error); }
 
 /* ── Spinner ── */
 .spinner {
   width: 20px; height: 20px;
-  border: 2px solid #d8d3cb; border-top-color: #1b6feb;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -233,9 +223,11 @@ function onSelectSpace(space) {
   text-align: center;
   padding: 10px 0 14px;
   font-size: 12px;
-  color: #1c1f26;
-  border-top: 1px solid #e2ddd5;
-  background: transparent;
+  color: var(--color-text-secondary);
+  border-top: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   position: relative;
   z-index: 1;
 }

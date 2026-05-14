@@ -3,7 +3,8 @@ from typing import List
 from fastapi import APIRouter, Request, Response
 from pydantic import BaseModel
 
-from config import DATABRICKS_HOST, MODE, WORKSPACE_ID
+from auth import user_email as _user_email_helper
+from config import DATABRICKS_HOST, WORKSPACE_ID
 from database import get_conn
 from models import SpaceOut
 
@@ -37,9 +38,7 @@ def _genie_url(space_key: str) -> str:
 
 
 def _user_email(request: Request) -> str:
-    if MODE == "LOCAL":
-        return "user@example.com"
-    return request.headers.get("X-Forwarded-Email", "unknown")
+    return _user_email_helper(request)
 
 
 @router.get("/all", response_model=List[SpaceOut])
