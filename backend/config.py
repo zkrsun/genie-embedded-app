@@ -41,5 +41,14 @@ LAKEBASE_PASSWORD: str = env("LAKEBASE_PASSWORD")
 PBI_TENANT_ID: str = env("PBI_TENANT_ID")
 PBI_CLIENT_ID: str = env("PBI_CLIENT_ID")
 PBI_CLIENT_SECRET: str = env("PBI_CLIENT_SECRET")
-PBI_WORKSPACE_ID: str = env("PBI_WORKSPACE_ID")
-PBI_REPORT_ID: str = env("PBI_REPORT_ID")
+
+# space_code → (workspace_id, report_id, rls_role).
+# rls_role = "" when the dataset has no Row-Level Security.
+PBI_SPACES: dict[str, tuple[str, str, str]] = {
+    "test_pl": (env("PBI_WORKSPACE_ID"), env("PBI_REPORT_ID"), ""),
+    "asia_th_pos": (
+        env("PBI_ASIA_TH_POS_WORKSPACE_ID"),
+        env("PBI_ASIA_TH_POS_REPORT_ID"),
+        env("PBI_ASIA_TH_POS_RLS_ROLE"),
+    ),
+}

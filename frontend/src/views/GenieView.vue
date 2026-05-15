@@ -77,7 +77,8 @@ const route    = useRoute()
 const router   = useRouter()
 const spaceUrl = ref(null)
 
-const showPbi = computed(() => route.params.space === 'test_pl')
+const PBI_SPACES = ['test_pl', 'asia_th_pos']
+const showPbi = computed(() => PBI_SPACES.includes(route.params.space))
 
 const pbiOpen      = ref(false)
 const pbiLoading   = ref(false)
@@ -140,7 +141,7 @@ async function loadPbi() {
   pbiError.value = null
 
   try {
-    const res = await fetch('/api/pbi/embed')
+    const res = await fetch(`/api/pbi/embed?space=${encodeURIComponent(route.params.space)}`)
     if (!res.ok) {
       const detail = await res.text()
       throw new Error(`HTTP ${res.status}: ${detail}`)
@@ -191,6 +192,16 @@ watch(pbiOpen, async (open) => {
     await nextTick()
     loadPbi()
   }
+})
+
+watch(() => route.params.space, () => {
+  if (pbiEmbed) {
+    try { pbiEmbed.reset() } catch (_) {}
+    pbiEmbed = null
+  }
+  pbiLoaded = false
+  pbiError.value = null
+  pbiOpen.value = false
 })
 
 onMounted(async () => {

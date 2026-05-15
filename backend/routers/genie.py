@@ -83,9 +83,9 @@ def log_space_access(payload: SpaceAccessIn, request: Request) -> Response:
 
 
 @router.get("/pbi/embed")
-def get_pbi_embed():
-    """Return PowerBI embed params for the temporary test_pl report."""
+def get_pbi_embed(space: str):
+    """Return PowerBI embed params for the given Genie space."""
     try:
-        return _get_pbi_embed_params()
+        return _get_pbi_embed_params(space)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
