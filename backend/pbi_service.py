@@ -1,5 +1,5 @@
 """
-Minimal PowerBI embed helper for the test_pl Genie page.
+Minimal PowerBI embed helper for Genie pages.
 
 Acquires a Service Principal access token via MSAL, then asks the PowerBI
 REST API for a single-report embed token. Returns `accessToken` + `embedUrl`
@@ -15,24 +15,21 @@ from config import (
     PBI_TENANT_ID,
     PBI_CLIENT_ID,
     PBI_CLIENT_SECRET,
-    PBI_WORKSPACE_ID,
-    PBI_REPORT_ID,
+    PBI_SPACES,
 )
 
 _SCOPE = ["https://analysis.windows.net/powerbi/api/.default"]
 
 
-def _missing_config() -> Optional[str]:
-    required = {
+def _missing_credentials() -> Optional[str]:
+    creds = {
         "PBI_TENANT_ID": PBI_TENANT_ID,
         "PBI_CLIENT_ID": PBI_CLIENT_ID,
         "PBI_CLIENT_SECRET": PBI_CLIENT_SECRET,
-        "PBI_WORKSPACE_ID": PBI_WORKSPACE_ID,
-        "PBI_REPORT_ID": PBI_REPORT_ID,
     }
-    missing = [k for k, v in required.items() if not v]
+    missing = [k for k, v in creds.items() if not v]
     if missing:
-        return "Missing PowerBI config: " + ", ".join(missing)
+        return "Missing PowerBI credentials: " + ", ".join(missing)
     return None
 
 
@@ -54,16 +51,25 @@ def _auth_headers(token: str) -> dict:
     return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
 
-def get_embed_params() -> dict:
-    """Return { accessToken, embedUrl, reportId } for the configured PBI report."""
-    err = _missing_config()
+def get_embed_params(space_code: str) -> dict:
+    """Return { accessToken, embedUrl, reportId } for the given space's PBI report."""
+    err = _missing_credentials()
     if err:
         raise RuntimeError(err)
+
+    if space_code not in PBI_SPACES:
+        raise RuntimeError(f"No PowerBI report configured for space '{space_code}'")
+
+    workspace_id, report_id, rls_role = PBI_SPACES[space_code]
+    if not workspace_id or not report_id:
+        raise RuntimeError(
+            f"Missing workspace_id or report_id in app.yaml for space '{space_code}'"
+        )
 
     access_token = _get_access_token()
 
     report_resp = requests.get(
-        f"https://api.powerbi.com/v1.0/myorg/groups/{PBI_WORKSPACE_ID}/reports/{PBI_REPORT_ID}",
+        f"https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/reports/{report_id}",
         headers=_auth_headers(access_token),
         timeout=30,
     )
@@ -77,9 +83,24 @@ def get_embed_params() -> dict:
 
     body = {
         "datasets": [{"id": dataset_id}] if dataset_id else [],
-        "reports": [{"id": PBI_REPORT_ID}],
-        "targetWorkspaces": [{"id": PBI_WORKSPACE_ID}],
+        "reports": [{"id": report_id}],
+        "targetWorkspaces": [{"id": workspace_id}],
     }
+
+    # When the dataset has RLS, PowerBI requires an effective identity.
+    # Using the Service Principal's CLIENT_ID as the username + the configured role.
+    if rls_role:
+        if not dataset_id:
+            raise RuntimeError(
+                f"Cannot apply RLS for space '{space_code}': report has no associated dataset"
+            )
+        body["identities"] = [
+            {
+                "username": PBI_CLIENT_ID,
+                "roles": [rls_role],
+                "datasets": [dataset_id],
+            }
+        ]
     token_resp = requests.post(
         "https://api.powerbi.com/v1.0/myorg/GenerateToken",
         headers=_auth_headers(access_token),
@@ -95,5 +116,5 @@ def get_embed_params() -> dict:
     return {
         "accessToken": embed_token,
         "embedUrl": embed_url,
-        "reportId": PBI_REPORT_ID,
+        "reportId": report_id,
     }
